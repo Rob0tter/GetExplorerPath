@@ -1,4 +1,4 @@
-# GetExplorerPath
+# ![Logo](./src/icon.ico) GetExplorerPath
 
 Get the full path of the currently active tab of an Explorer Window
 
