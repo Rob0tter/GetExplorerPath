@@ -4,7 +4,7 @@
 ;@Ahk2Exe-ConsoleApp
 ;@Ahk2Exe-SetMainIcon .\icon.ico
 ;@Ahk2Exe-SetName Get Explorer Path
-;@Ahk2Exe-SetFileVersion 1.0
+;@Ahk2Exe-SetFileVersion 1.1
 ;@Ahk2Exe-SetCopyright 2025 Dirk Schwarzmann
 ;@Ahk2Exe-SetDescription Gets the full path of the currently active tab of an Explorer Window
 
@@ -69,20 +69,22 @@ IniReadKeys(iniName, iniSection) {
 	sectionFound := False
 	pathMap := Map()
 	
-	Loop Read, iniName {
-		If (A_LoopReadLine = "[" . iniSection . "]") {
-			sectionFound := True
-		} Else {
-			If (sectionFound = True And Trim(A_LoopReadLine) != "") {
-				If (SubStr(A_LoopReadLine, 1, 1) != "[") {
-					; Found an entry within the proper section
-					kvp := StrSplit(A_LoopReadLine, "=")
-					If (kvp.Length > 1)
-						pathMap[Trim(kvp[1])] := Trim(kvp[2])
-				} Else {
-					; Next section begins, we are finished
-					sectionFound := False
-					Continue
+	If (FileExist(iniName)) {
+		Loop Read, iniName {
+			If (A_LoopReadLine = "[" . iniSection . "]") {
+				sectionFound := True
+			} Else {
+				If (sectionFound = True And Trim(A_LoopReadLine) != "") {
+					If (SubStr(A_LoopReadLine, 1, 1) != "[") {
+						; Found an entry within the proper section
+						kvp := StrSplit(A_LoopReadLine, "=")
+						If (kvp.Length > 1)
+							pathMap[Trim(kvp[1])] := Trim(kvp[2])
+					} Else {
+						; Next section begins, we are finished
+						sectionFound := False
+						Continue
+					}
 				}
 			}
 		}
